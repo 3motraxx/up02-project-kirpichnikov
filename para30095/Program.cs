@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace task30095
 {
@@ -6,19 +7,74 @@ namespace task30095
     {
         static void Main(string[] args)
         {
-            Product p = new Product(
-                2,
-                "Ботинки Timberland",
-                "Ботинки",
-                15000,
-                3
-            );
+            List<Product> products = Database.GetAllProducts();
 
-            DateTime date = new DateTime(2026, 09, 15);
+            TestDiscount(products, new DateTime(2026, 9, 15));
+            TestDiscount(products, new DateTime(2026, 9, 20));
 
-            Console.WriteLine($"Базовая цена: {p.Price}");
+            Console.ReadLine();
+        }
+
+
+        static void TestDiscount(List<Product> products, DateTime date)
+        {
+            Console.WriteLine();
+            Console.WriteLine("======================================================================");
             Console.WriteLine(
-                $"Со скидкой: {p.PriceWithDiscountAuto(date):F1}"
+                $"ТЕСТИРОВАНИЕ АЛГОРИТМА СКИДКИ НА {date:yyyy-MM-dd}"
+            );
+            Console.WriteLine("======================================================================");
+
+            int passed = 0;
+
+            foreach (Product product in products)
+            {
+                decimal result = product.PriceWithDiscountAuto(date);
+
+                int ordersCount =
+                    Database.GetOrdersCountLastMonth(product, date);
+
+                decimal expected;
+
+                if (ordersCount == 0)
+                {
+                    expected = product.Price * 0.75m;
+                }
+                else
+                {
+                    expected = product.Price;
+                }
+
+                string status =
+                    result == expected ? "✅" : "❌";
+
+                if (result == expected)
+                {
+                    passed++;
+                }
+
+                string comment;
+
+                if (ordersCount == 0)
+                {
+                    comment = "Заказов нет → 25% скидка";
+                }
+                else
+                {
+                    comment = "Заказы есть → скидки нет";
+                }
+
+                Console.WriteLine(
+                    $"{status} Товар {product.Id} на {date:yyyy-MM-dd}: " +
+                    $"{product.Price} → {result} " +
+                    $"(ожидалось {expected}) — " +
+                    $"{product.Name} — {comment}"
+                );
+            }
+
+            Console.WriteLine("======================================================================");
+            Console.WriteLine(
+                $"Пройдено: {passed} / {products.Count}"
             );
         }
     }
