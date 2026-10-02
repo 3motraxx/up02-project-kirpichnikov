@@ -1,0 +1,36 @@
+[33mcommit ffcd14dff4649d60f4499f29e62afa28fb5c2741[m
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Fri Oct 2 15:03:27 2026 +0300
+
+    Добавлен метод is_available
+
+[33mcommit 0daef834b0655de861ef7f9a2643fdb2db0c8d38[m
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Fri Oct 2 14:23:50 2026 +0300
+
+    Разрешён конфликт: скидка 25%
+
+[33mcommit 02bfc7ab9d598c630599ff0222824928535ac7b1[m
+Merge: cb57d62 69b6182
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Fri Oct 2 14:23:31 2026 +0300
+
+    Разрешён конфликт: скидка 25%
+
+[33mcommit cb57d62bccba518319abbd36a0af6fe079442d1a[m
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Fri Oct 2 14:20:14 2026 +0300
+
+    Изменение скидки в main
+
+[33mcommit 69b6182c25e8c49639a62771e03a063dff307f8a[m
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Fri Oct 2 14:17:40 2026 +0300
+
+    Изменение скидки в ветке conflict-test
+
+[33mcommit 99fcca0605c2df3916c6100774efbd153ceff673[m[33m ([m[1;32mtest-discount[m[33m)[m
+Author: 3motraxx <15yocybergrinder@gmail.com>
+Date:   Wed Sep 30 18:42:05 2026 +0300
+
+    Пара 5: алгоритм скидки
