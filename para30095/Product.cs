@@ -32,7 +32,6 @@ namespace task30095
         public decimal DiscountedPrice()
         {
             return Price * 0.75m;
-
         }
 
         public decimal PriceWithDiscountAuto(DateTime? date = null)
@@ -45,6 +44,11 @@ namespace task30095
             );
         }
 
+        public string OrderInfo()
+        {
+            return $"Товар №{Id}: {Name}, количество: {Quantity}";
+        }
+
         public string GetInfo()
         {
             string indicator = Quantity > 5 ? "много" : "мало";
@@ -52,6 +56,11 @@ namespace task30095
             return $"{Name} ({Category}): " +
                    $"{Price} руб. × {Quantity} = " +
                    $"{GetTotalPrice()} руб. ({indicator})";
+        }
+
+        public bool IsAvailable()
+        {
+            return Quantity > 0;
         }
     }
 }
