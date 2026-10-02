@@ -14,3 +14,6 @@ obj/
 *.userosscache
 *.sln.docstates
 *.log
+.ipynb_checkpoints/
+~$*.xlsx
+*.db-journal
