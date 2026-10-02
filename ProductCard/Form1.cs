@@ -129,10 +129,39 @@ namespace ProductCard
             picture.BackColor = Color.LightGray;
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            picture.Image = Resources.GetProductImage(
-                product.ImagePath,
-                new Size(100, 100)
-            );
+            string imagePath = product.ImagePath;
+
+            bool isPlaceholder =
+                string.IsNullOrWhiteSpace(imagePath) ||
+                !System.IO.File.Exists(imagePath);
+
+            if (isPlaceholder)
+            {
+                picture.Image = Resources.GetProductImage(
+                    null,
+                    new Size(100, 100)
+                );
+
+                Label noPhoto = new Label();
+
+                noPhoto.Text = "Нет фото";
+                noPhoto.Font = Styles.Font(
+                    Styles.FONT_SIZE_SMALL,
+                    true
+                );
+                noPhoto.BackColor = Color.Transparent;
+                noPhoto.AutoSize = true;
+                noPhoto.Location = new Point(25, 65);
+
+                picture.Controls.Add(noPhoto);
+            }
+            else
+            {
+                picture.Image = Resources.GetProductImage(
+                    imagePath,
+                    new Size(100, 100)
+                );
+            }
 
 
             Label title = new Label();
