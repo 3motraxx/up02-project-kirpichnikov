@@ -15,7 +15,6 @@ namespace task30095
             Console.ReadLine();
         }
 
-
         static void TestDiscount(List<Product> products, DateTime date)
         {
             Console.WriteLine();
@@ -38,7 +37,7 @@ namespace task30095
 
                 if (ordersCount == 0)
                 {
-                    expected = product.Price * 0.75m;
+                    expected = product.DiscountedPrice();
                 }
                 else
                 {
@@ -66,8 +65,8 @@ namespace task30095
 
                 Console.WriteLine(
                     $"{status} Товар {product.Id} на {date:yyyy-MM-dd}: " +
-                    $"{product.Price} → {result} " +
-                    $"(ожидалось {expected}) — " +
+                    $"{product.Price} → {result:F2} " +
+                    $"(ожидалось {expected:F2}) — " +
                     $"{product.Name} — {comment}"
                 );
             }
