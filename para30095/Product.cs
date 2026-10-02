@@ -31,8 +31,6 @@ namespace task30095
 
         public decimal DiscountedPrice()
         {
-            return Price * 0.90m;
-
             return Price * 0.75m;
 
         }
