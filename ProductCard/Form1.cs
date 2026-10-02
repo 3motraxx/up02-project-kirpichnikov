@@ -25,39 +25,56 @@ namespace ProductCard
             StartPosition = FormStartPosition.CenterScreen;
             BackColor = Color.White;
 
+            string iconPath = Resources.PATH_ICON;
+
+            if (System.IO.File.Exists(iconPath))
+            {
+                try
+                {
+                    Icon = new Icon(iconPath);
+                }
+                catch
+                {
+
+                }
+            }
+
             Panel header = new Panel();
 
             header.Dock = DockStyle.Top;
-            header.Height = 70;
-            header.BackColor = Color.FromArgb(210, 246, 231);
+            header.Height = 80;
+            header.BackColor = Styles.COLOR_SECONDARY_BG;
+
+
+            PictureBox logo = new PictureBox();
+
+            logo.Width = 60;
+            logo.Height = 60;
+            logo.Location = new Point(15, 10);
+            logo.SizeMode = PictureBoxSizeMode.Zoom;
+            logo.BackColor = Color.Transparent;
+
+            Image? logoImage = Resources.LoadImageProportional(
+                Resources.PATH_LOGO,
+                new Size(60, 60)
+            );
+
+            if (logoImage != null)
+            {
+                logo.Image = logoImage;
+            }
+
+            header.Controls.Add(logo);
 
             Label title = new Label();
 
             title.Text = "КАТАЛОГ ТОВАРОВ";
-            title.Font = new Font(
-                "Arial",
-                16,
-                FontStyle.Bold
+            title.Font = Styles.Font(
+            Styles.FONT_SIZE_TITLE,
+             true
             );
-
             title.Dock = DockStyle.Fill;
             title.TextAlign = ContentAlignment.MiddleCenter;
-
-            PictureBox logo = new PictureBox();
-
-            logo.Width = 50;
-            logo.Height = 50;
-            logo.Location = new Point(10, 10);
-            logo.SizeMode = PictureBoxSizeMode.StretchImage;
-
-            string logoPath = "resources/logo.png";
-
-            if (System.IO.File.Exists(logoPath))
-            {
-                logo.Image = Image.FromFile(logoPath);
-            }
-
-            header.Controls.Add(logo);
 
             header.Controls.Add(title);
 
@@ -65,8 +82,7 @@ namespace ProductCard
 
             catalogPanel.Dock = DockStyle.Fill;
             catalogPanel.BackColor = Color.White;
-            catalogPanel.FlowDirection =
-                FlowDirection.TopDown;
+            catalogPanel.FlowDirection = FlowDirection.TopDown;
             catalogPanel.WrapContents = false;
             catalogPanel.AutoScroll = true;
             catalogPanel.Padding = new Padding(10);
@@ -91,9 +107,9 @@ namespace ProductCard
         private Panel CreateProductCard(Product product)
         {
             Color bgColor =
-    product.Quantity <= 3
-        ? Color.FromArgb(255, 128, 128)
-        : Color.White;
+     product.Quantity <= 3
+         ? Styles.COLOR_HIGHLIGHT
+         : Styles.COLOR_MAIN_BG;
 
             Panel card = new Panel();
 
@@ -113,20 +129,10 @@ namespace ProductCard
             picture.BackColor = Color.LightGray;
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            // Путь к изображению
-            string imagePath = product.ImagePath;
-
-            if (string.IsNullOrWhiteSpace(imagePath) ||
-                !System.IO.File.Exists(imagePath))
-            {
-                imagePath = "resources/picture.png";
-            }
-
-            // Загружаем изображение
-            if (System.IO.File.Exists(imagePath))
-            {
-                picture.Image = Image.FromFile(imagePath);
-            }
+            picture.Image = Resources.GetProductImage(
+                product.ImagePath,
+                new Size(100, 100)
+            );
 
 
             Label title = new Label();
