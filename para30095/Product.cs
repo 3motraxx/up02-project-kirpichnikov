@@ -29,6 +29,11 @@ namespace task30095
             return Price * Quantity;
         }
 
+        public decimal DiscountedPrice()
+        {
+            return Price * 0.80m;
+        }
+
         public decimal PriceWithDiscountAuto(DateTime? date = null)
         {
             DateTime calculationDate = date ?? DateTime.Now;
