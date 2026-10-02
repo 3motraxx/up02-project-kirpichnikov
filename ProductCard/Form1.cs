@@ -43,6 +43,22 @@ namespace ProductCard
             title.Dock = DockStyle.Fill;
             title.TextAlign = ContentAlignment.MiddleCenter;
 
+            PictureBox logo = new PictureBox();
+
+            logo.Width = 50;
+            logo.Height = 50;
+            logo.Location = new Point(10, 10);
+            logo.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            string logoPath = "resources/logo.png";
+
+            if (System.IO.File.Exists(logoPath))
+            {
+                logo.Image = Image.FromFile(logoPath);
+            }
+
+            header.Controls.Add(logo);
+
             header.Controls.Add(title);
 
             catalogPanel = new FlowLayoutPanel();
@@ -75,9 +91,9 @@ namespace ProductCard
         private Panel CreateProductCard(Product product)
         {
             Color bgColor =
-                product.Quantity <= 3
-                    ? Color.LightYellow
-                    : Color.White;
+    product.Quantity <= 3
+        ? Color.FromArgb(255, 128, 128)
+        : Color.White;
 
             Panel card = new Panel();
 
@@ -87,6 +103,7 @@ namespace ProductCard
             card.BorderStyle =
                 BorderStyle.FixedSingle;
             card.Margin = new Padding(5);
+            card.BorderStyle = BorderStyle.FixedSingle;
 
             PictureBox picture = new PictureBox();
 
