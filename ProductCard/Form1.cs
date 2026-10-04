@@ -253,15 +253,11 @@ namespace ProductCard
             card.Controls.Add(categoryLabel);
         }
 
-        // Количество
         private void AddQuantity(
-            Panel card,
-            Product product)
+    Panel card,
+    Product product)
         {
-            string indicator =
-                product.Quantity > 5
-                    ? "много"
-                    : "мало";
+            string indicator = Indicator(product.Quantity);
 
             Label quantity = new Label();
 
@@ -326,6 +322,11 @@ namespace ProductCard
             priceLabel.AutoSize = true;
 
             card.Controls.Add(priceLabel);
+        }
+
+        private string Indicator(int qty)
+        {
+            return qty > 5 ? "много" : "мало";
         }
     }
 }
