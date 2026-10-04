@@ -23,8 +23,27 @@ namespace ProductCard
             Width = 900;
             Height = 700;
             StartPosition = FormStartPosition.CenterScreen;
-            BackColor = Color.White;
+            BackColor = Styles.COLOR_MAIN_BG;
 
+            SetApplicationIcon();
+
+            Panel header = CreateHeader();
+
+            catalogPanel = new FlowLayoutPanel();
+
+            catalogPanel.Dock = DockStyle.Fill;
+            catalogPanel.BackColor = Styles.COLOR_MAIN_BG;
+            catalogPanel.FlowDirection = FlowDirection.TopDown;
+            catalogPanel.WrapContents = false;
+            catalogPanel.AutoScroll = true;
+            catalogPanel.Padding = new Padding(10);
+
+            Controls.Add(catalogPanel);
+            Controls.Add(header);
+        }
+
+        private void SetApplicationIcon()
+        {
             string iconPath = Resources.PATH_ICON;
 
             if (System.IO.File.Exists(iconPath))
@@ -35,16 +54,17 @@ namespace ProductCard
                 }
                 catch
                 {
-
                 }
             }
+        }
 
+        private Panel CreateHeader()
+        {
             Panel header = new Panel();
 
             header.Dock = DockStyle.Top;
             header.Height = 80;
             header.BackColor = Styles.COLOR_SECONDARY_BG;
-
 
             PictureBox logo = new PictureBox();
 
@@ -70,25 +90,15 @@ namespace ProductCard
 
             title.Text = "КАТАЛОГ ТОВАРОВ";
             title.Font = Styles.Font(
-            Styles.FONT_SIZE_TITLE,
-             true
+                Styles.FONT_SIZE_TITLE,
+                true
             );
             title.Dock = DockStyle.Fill;
             title.TextAlign = ContentAlignment.MiddleCenter;
 
             header.Controls.Add(title);
 
-            catalogPanel = new FlowLayoutPanel();
-
-            catalogPanel.Dock = DockStyle.Fill;
-            catalogPanel.BackColor = Color.White;
-            catalogPanel.FlowDirection = FlowDirection.TopDown;
-            catalogPanel.WrapContents = false;
-            catalogPanel.AutoScroll = true;
-            catalogPanel.Padding = new Padding(10);
-
-            Controls.Add(catalogPanel);
-            Controls.Add(header);
+            return header;
         }
 
         private void LoadProducts()
@@ -104,23 +114,45 @@ namespace ProductCard
             }
         }
 
+        // Главная функция создания карточки
         private Panel CreateProductCard(Product product)
         {
+            Panel card = CreateCard(product);
+
+            AddProductImage(card, product);
+            AddTitle(card, product);
+            AddCategory(card, product);
+            AddQuantity(card, product);
+            AddComposition(card, product);
+            AddPrice(card, product);
+
+            return card;
+        }
+
+        // Создание самой карточки
+        private Panel CreateCard(Product product)
+        {
             Color bgColor =
-     product.Quantity <= 3
-         ? Styles.COLOR_HIGHLIGHT
-         : Styles.COLOR_MAIN_BG;
+                product.Quantity <= 3
+                    ? Styles.COLOR_HIGHLIGHT
+                    : Styles.COLOR_MAIN_BG;
 
             Panel card = new Panel();
 
             card.Width = 820;
             card.Height = 160;
             card.BackColor = bgColor;
-            card.BorderStyle =
-                BorderStyle.FixedSingle;
-            card.Margin = new Padding(5);
             card.BorderStyle = BorderStyle.FixedSingle;
+            card.Margin = new Padding(5);
 
+            return card;
+        }
+
+        // Изображение товара
+        private void AddProductImage(
+            Panel card,
+            Product product)
+        {
             PictureBox picture = new PictureBox();
 
             picture.Width = 100;
@@ -163,34 +195,69 @@ namespace ProductCard
                 );
             }
 
+            card.Controls.Add(picture);
+        }
+
+        // Название товара
+        private void AddTitle(
+    Panel card,
+    Product product)
+        {
+            string name =
+                string.IsNullOrWhiteSpace(product.Name)
+                    ? "[Без названия]"
+                    : product.Name;
 
             Label title = new Label();
 
             title.Text =
-                $"Цветы | {product.Name}";
+                $"Цветы | {name}";
 
-            title.Font = new Font(
-                "Arial",
-                14,
-                FontStyle.Bold
+            title.Font = Styles.Font(
+                Styles.FONT_SIZE_HEADER,
+                true
             );
 
             title.Location =
                 new Point(135, 15);
+
             title.AutoSize = true;
 
-            Label category = new Label();
+            card.Controls.Add(title);
+        }
 
-            category.Text =
-                $"Категория: {product.Category}";
+        private void AddCategory(
+     Panel card,
+     Product product)
+        {
+            string category =
+                string.IsNullOrWhiteSpace(product.Category)
+                    ? "[Без категории]"
+                    : product.Category;
 
-            category.Font =
-                new Font("Arial", 11);
+            Label categoryLabel = new Label();
 
-            category.Location =
+            categoryLabel.Text =
+                $"Категория: {category}";
+
+            categoryLabel.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
+
+            categoryLabel.Location =
                 new Point(135, 50);
-            category.AutoSize = true;
 
+            categoryLabel.AutoSize = true;
+
+            card.Controls.Add(categoryLabel);
+        }
+
+        // Количество
+        private void AddQuantity(
+            Panel card,
+            Product product)
+        {
             string indicator =
                 product.Quantity > 5
                     ? "много"
@@ -202,47 +269,63 @@ namespace ProductCard
                 $"Количество: {indicator} ({product.Quantity})";
 
             quantity.Font =
-                new Font("Arial", 11);
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
 
             quantity.Location =
                 new Point(135, 75);
+
             quantity.AutoSize = true;
 
+            card.Controls.Add(quantity);
+        }
+
+        private void AddComposition(
+            Panel card,
+            Product product)
+        {
             Label composition = new Label();
 
             composition.Text =
                 $"Состав: {product.Composition}";
 
             composition.Font =
-                new Font("Arial", 11);
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
 
             composition.Location =
                 new Point(135, 100);
+
             composition.AutoSize = true;
 
-            Label price = new Label();
-
-            price.Text =
-                $"{product.Price:F2} руб.";
-
-            price.Font = new Font(
-                "Arial",
-                14,
-                FontStyle.Bold
-            );
-
-            price.Location =
-                new Point(650, 60);
-            price.AutoSize = true;
-
-            card.Controls.Add(picture);
-            card.Controls.Add(title);
-            card.Controls.Add(category);
-            card.Controls.Add(quantity);
             card.Controls.Add(composition);
-            card.Controls.Add(price);
+        }
 
-            return card;
+        private void AddPrice(
+    Panel card,
+    Product product)
+        {
+            decimal price = product.Price;
+
+            Label priceLabel = new Label();
+
+            priceLabel.Text =
+                $"{price:F2} руб.";
+
+            priceLabel.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_HEADER,
+                    true
+                );
+
+            priceLabel.Location =
+                new Point(650, 60);
+
+            priceLabel.AutoSize = true;
+
+            card.Controls.Add(priceLabel);
         }
     }
 }
