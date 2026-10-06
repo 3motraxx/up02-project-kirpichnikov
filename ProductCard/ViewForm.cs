@@ -9,6 +9,8 @@ namespace ProductCard
         private readonly Product product;
         private readonly Action<Product>? onAddToOrder;
 
+        private TextBox quantityTextBox = null!;
+
         public ViewForm(
             Product product,
             Action<Product>? onAddToOrder = null)
@@ -18,9 +20,12 @@ namespace ProductCard
 
             Text = $"Просмотр — {product.Name}";
             Width = 700;
-            Height = 600;
-            StartPosition = FormStartPosition.CenterParent;
-            BackColor = Styles.COLOR_MAIN_BG;
+            Height = 700;
+            StartPosition =
+                FormStartPosition.CenterParent;
+
+            BackColor =
+                Styles.COLOR_MAIN_BG;
 
             BuildUI();
         }
@@ -32,18 +37,26 @@ namespace ProductCard
 
             header.Dock = DockStyle.Top;
             header.Height = 60;
-            header.BackColor = Styles.COLOR_SECONDARY_BG;
+            header.BackColor =
+                Styles.COLOR_SECONDARY_BG;
 
             Label headerLabel = new Label();
 
-            headerLabel.Text = "КАРТОЧКА ТОВАРА";
-            headerLabel.Font = Styles.Font(
-                Styles.FONT_SIZE_TITLE,
-                true
-            );
-            headerLabel.Dock = DockStyle.Fill;
+            headerLabel.Text =
+                "КАРТОЧКА ТОВАРА";
+
+            headerLabel.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_TITLE,
+                    true
+                );
+
+            headerLabel.Dock =
+                DockStyle.Fill;
+
             headerLabel.TextAlign =
                 ContentAlignment.MiddleCenter;
+
             headerLabel.BackColor =
                 Styles.COLOR_SECONDARY_BG;
 
@@ -54,8 +67,11 @@ namespace ProductCard
             Panel main = new Panel();
 
             main.Dock = DockStyle.Fill;
-            main.BackColor = Styles.COLOR_MAIN_BG;
-            main.Padding = new Padding(20);
+            main.BackColor =
+                Styles.COLOR_MAIN_BG;
+
+            main.Padding =
+                new Padding(20);
 
             Controls.Add(main);
 
@@ -63,17 +79,24 @@ namespace ProductCard
             Panel imgFrame = new Panel();
 
             imgFrame.Width = 220;
-            imgFrame.Dock = DockStyle.Left;
+            imgFrame.Dock =
+                DockStyle.Left;
+
             imgFrame.BackColor =
                 Styles.COLOR_MAIN_BG;
 
-            PictureBox picture = new PictureBox();
+            PictureBox picture =
+                new PictureBox();
 
             picture.Width = 200;
             picture.Height = 200;
-            picture.Location = new Point(10, 20);
+
+            picture.Location =
+                new Point(10, 20);
+
             picture.SizeMode =
                 PictureBoxSizeMode.StretchImage;
+
             picture.BackColor =
                 Styles.COLOR_MAIN_BG;
 
@@ -87,11 +110,15 @@ namespace ProductCard
             main.Controls.Add(imgFrame);
 
             // Информация
-            Panel infoFrame = new Panel();
+            Panel infoFrame =
+                new Panel();
 
-            infoFrame.Dock = DockStyle.Fill;
+            infoFrame.Dock =
+                DockStyle.Fill;
+
             infoFrame.BackColor =
                 Styles.COLOR_MAIN_BG;
+
             infoFrame.Padding =
                 new Padding(20, 20, 10, 10);
 
@@ -117,6 +144,16 @@ namespace ProductCard
 
             AddField(
                 infoFrame,
+                "Описание",
+                string.IsNullOrWhiteSpace(
+                    product.Description
+                )
+                    ? "Не указано"
+                    : product.Description
+            );
+
+            AddField(
+                infoFrame,
                 "Цена",
                 $"{product.Price:F2} руб."
             );
@@ -127,51 +164,125 @@ namespace ProductCard
                 product.Quantity
             );
 
-            // Кнопки
-            Panel btnFrame = new Panel();
+            // Ввод количества
+            Label quantityLabel =
+                new Label();
 
-            btnFrame.Dock = DockStyle.Bottom;
+            quantityLabel.Text =
+                "Количество для заказа:";
+
+            quantityLabel.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL,
+                    true
+                );
+
+            quantityLabel.AutoSize = true;
+
+            quantityLabel.Location =
+                new Point(20, 245);
+
+            quantityLabel.BackColor =
+                Styles.COLOR_MAIN_BG;
+
+            infoFrame.Controls.Add(
+                quantityLabel
+            );
+
+            quantityTextBox =
+                new TextBox();
+
+            quantityTextBox.Width = 100;
+
+            quantityTextBox.Location =
+                new Point(190, 242);
+
+            quantityTextBox.Text =
+                "1";
+
+            quantityTextBox.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
+
+            infoFrame.Controls.Add(
+                quantityTextBox
+            );
+
+            // Кнопки
+            Panel btnFrame =
+                new Panel();
+
+            btnFrame.Dock =
+                DockStyle.Bottom;
+
             btnFrame.Height = 60;
+
             btnFrame.BackColor =
                 Styles.COLOR_MAIN_BG;
 
-            Button addButton = new Button();
+            Button addButton =
+                new Button();
 
-            addButton.Text = "Добавить в заказ";
-            addButton.Font = Styles.Font(
-                Styles.FONT_SIZE_NORMAL
-            );
+            addButton.Text =
+                "Добавить в заказ";
+
+            addButton.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
+
             addButton.BackColor =
                 Styles.COLOR_ACCENT;
-            addButton.ForeColor = Color.White;
+
+            addButton.ForeColor =
+                Color.White;
+
             addButton.Width = 180;
             addButton.Height = 40;
+
             addButton.Location =
                 new Point(20, 10);
 
-            addButton.Click += AddToOrder;
+            addButton.Click +=
+                AddToOrder;
 
-            Button backButton = new Button();
+            Button backButton =
+                new Button();
 
-            backButton.Text = "Назад";
-            backButton.Font = Styles.Font(
-                Styles.FONT_SIZE_NORMAL
-            );
+            backButton.Text =
+                "Назад";
+
+            backButton.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
+
             backButton.BackColor =
                 Styles.COLOR_ACCENT;
-            backButton.ForeColor = Color.White;
+
+            backButton.ForeColor =
+                Color.White;
+
             backButton.Width = 120;
             backButton.Height = 40;
+
             backButton.Location =
                 new Point(215, 10);
 
-            backButton.Click += (sender, e) =>
-            {
-                Close();
-            };
+            backButton.Click +=
+                (sender, e) =>
+                {
+                    Close();
+                };
 
-            btnFrame.Controls.Add(addButton);
-            btnFrame.Controls.Add(backButton);
+            btnFrame.Controls.Add(
+                addButton
+            );
+
+            btnFrame.Controls.Add(
+                backButton
+            );
 
             Controls.Add(btnFrame);
         }
@@ -181,36 +292,49 @@ namespace ProductCard
             string label,
             object value)
         {
-            Panel row = new Panel();
+            Panel row =
+                new Panel();
 
             row.Height = 35;
-            row.Dock = DockStyle.Top;
+            row.Dock =
+                DockStyle.Top;
+
             row.BackColor =
                 Styles.COLOR_MAIN_BG;
 
-            Label labelControl = new Label();
+            Label labelControl =
+                new Label();
 
-            labelControl.Text = label + ":";
-            labelControl.Font = Styles.Font(
-                Styles.FONT_SIZE_NORMAL,
-                true
-            );
+            labelControl.Text =
+                label + ":";
+
+            labelControl.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL,
+                    true
+                );
+
             labelControl.Width = 120;
+
             labelControl.Dock =
                 DockStyle.Left;
+
             labelControl.TextAlign =
                 ContentAlignment.MiddleLeft;
+
             labelControl.BackColor =
                 Styles.COLOR_MAIN_BG;
 
-            Label valueControl = new Label();
+            Label valueControl =
+                new Label();
 
             valueControl.Text =
                 Convert.ToString(value) ?? "";
 
-            valueControl.Font = Styles.Font(
-                Styles.FONT_SIZE_NORMAL
-            );
+            valueControl.Font =
+                Styles.Font(
+                    Styles.FONT_SIZE_NORMAL
+                );
 
             valueControl.Dock =
                 DockStyle.Fill;
@@ -221,15 +345,20 @@ namespace ProductCard
             valueControl.BackColor =
                 Styles.COLOR_MAIN_BG;
 
-            row.Controls.Add(valueControl);
-            row.Controls.Add(labelControl);
+            row.Controls.Add(
+                valueControl
+            );
+
+            row.Controls.Add(
+                labelControl
+            );
 
             parent.Controls.Add(row);
         }
 
         private void AddToOrder(
-    object? sender,
-    EventArgs e)
+            object? sender,
+            EventArgs e)
         {
             if (onAddToOrder == null)
             {
@@ -255,12 +384,31 @@ namespace ProductCard
                 return;
             }
 
+            var validation =
+                ErrorHandler.ValidatePositiveInt(
+                    quantityTextBox.Text,
+                    "Количество"
+                );
+
+            if (!validation.IsValid)
+            {
+                MessageBox.Show(
+                    validation.Message,
+                    "Ошибка",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
             try
             {
                 onAddToOrder(product);
 
                 MessageBox.Show(
-                    "Товар добавлен в заказ",
+                    $"Товар «{product.Name}» добавлен в заказ.\n" +
+                    $"Количество: {validation.Number}",
                     "Успех",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Information

@@ -9,6 +9,7 @@ namespace ProductCard
         public decimal Price { get; set; }
         public int Quantity { get; set; }
         public string ImagePath { get; set; }
+        public string Description { get; set; }
 
         public Product(
             int id,
@@ -17,7 +18,8 @@ namespace ProductCard
             string composition,
             decimal price,
             int quantity,
-            string imagePath)
+            string imagePath,
+            string description = "")
         {
             Id = id;
             Name = name;
@@ -26,6 +28,7 @@ namespace ProductCard
             Price = price;
             Quantity = quantity;
             ImagePath = imagePath;
+            Description = description;
         }
     }
 }
