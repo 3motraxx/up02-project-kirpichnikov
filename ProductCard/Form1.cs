@@ -7,7 +7,7 @@ namespace ProductCard
 {
     public partial class Form1 : Form
     {
-        private FlowLayoutPanel catalogPanel;
+        private FlowLayoutPanel catalogPanel = null!;
 
         public Form1()
         {
@@ -132,10 +132,7 @@ namespace ProductCard
         // Создание самой карточки
         private Panel CreateCard(Product product)
         {
-            Color bgColor =
-                product.Quantity <= 3
-                    ? Styles.COLOR_HIGHLIGHT
-                    : Styles.COLOR_MAIN_BG;
+            Color bgColor = GetCardColor(product.Quantity);
 
             Panel card = new Panel();
 
@@ -147,18 +144,17 @@ namespace ProductCard
 
             return card;
         }
-
         // Изображение товара
         private void AddProductImage(
-            Panel card,
-            Product product)
+     Panel card,
+     Product product)
         {
             PictureBox picture = new PictureBox();
 
             picture.Width = 100;
             picture.Height = 100;
             picture.Location = new Point(15, 25);
-            picture.BackColor = Color.LightGray;
+            picture.BackColor = card.BackColor;
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
             string imagePath = product.ImagePath;
@@ -181,7 +177,7 @@ namespace ProductCard
                     Styles.FONT_SIZE_SMALL,
                     true
                 );
-                noPhoto.BackColor = Color.Transparent;
+                noPhoto.BackColor = card.BackColor;
                 noPhoto.AutoSize = true;
                 noPhoto.Location = new Point(25, 65);
 
@@ -197,7 +193,6 @@ namespace ProductCard
 
             card.Controls.Add(picture);
         }
-
         // Название товара
         private void AddTitle(
     Panel card,
@@ -222,7 +217,7 @@ namespace ProductCard
                 new Point(135, 15);
 
             title.AutoSize = true;
-
+            title.BackColor = card.BackColor;
             card.Controls.Add(title);
         }
 
@@ -249,7 +244,7 @@ namespace ProductCard
                 new Point(135, 50);
 
             categoryLabel.AutoSize = true;
-
+            categoryLabel.BackColor = card.BackColor;
             card.Controls.Add(categoryLabel);
         }
 
@@ -273,7 +268,7 @@ namespace ProductCard
                 new Point(135, 75);
 
             quantity.AutoSize = true;
-
+            quantity.BackColor = card.BackColor;
             card.Controls.Add(quantity);
         }
 
@@ -295,7 +290,7 @@ namespace ProductCard
                 new Point(135, 100);
 
             composition.AutoSize = true;
-
+            composition.BackColor = card.BackColor;
             card.Controls.Add(composition);
         }
 
@@ -320,13 +315,19 @@ namespace ProductCard
                 new Point(650, 60);
 
             priceLabel.AutoSize = true;
-
+            priceLabel.BackColor = card.BackColor;
             card.Controls.Add(priceLabel);
         }
 
         private string Indicator(int qty)
         {
             return qty > 5 ? "много" : "мало";
+        }
+        private Color GetCardColor(int qty)
+        {
+            return qty <= 5
+                ? Styles.COLOR_HIGHLIGHT
+                : Styles.COLOR_MAIN_BG;
         }
     }
 }
