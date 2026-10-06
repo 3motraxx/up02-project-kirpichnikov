@@ -146,8 +146,8 @@ namespace ProductCard
         }
         // Изображение товара
         private void AddProductImage(
-     Panel card,
-     Product product)
+    Panel card,
+    Product product)
         {
             PictureBox picture = new PictureBox();
 
@@ -157,38 +157,38 @@ namespace ProductCard
             picture.BackColor = card.BackColor;
             picture.SizeMode = PictureBoxSizeMode.StretchImage;
 
-            string imagePath = product.ImagePath;
-
-            bool isPlaceholder =
-                string.IsNullOrWhiteSpace(imagePath) ||
-                !System.IO.File.Exists(imagePath);
-
-            if (isPlaceholder)
+            try
             {
-                picture.Image = Resources.GetProductImage(
-                    null,
-                    new Size(100, 100)
-                );
+                string imagePath = product.ImagePath;
 
-                Label noPhoto = new Label();
+                bool isPlaceholder =
+                    string.IsNullOrWhiteSpace(imagePath) ||
+                    !System.IO.File.Exists(imagePath);
 
-                noPhoto.Text = "Нет фото";
-                noPhoto.Font = Styles.Font(
-                    Styles.FONT_SIZE_SMALL,
-                    true
-                );
-                noPhoto.BackColor = card.BackColor;
-                noPhoto.AutoSize = true;
-                noPhoto.Location = new Point(25, 65);
+                if (isPlaceholder)
+                {
+                    throw new Exception("Нет изображения");
+                }
 
-                picture.Controls.Add(noPhoto);
-            }
-            else
-            {
                 picture.Image = Resources.GetProductImage(
                     imagePath,
                     new Size(100, 100)
                 );
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(
+                    $"[DEBUG] Ошибка загрузки фото: {e.Message}"
+                );
+
+                Label noPhoto = new Label();
+
+                noPhoto.Text = "[НЕТ ФОТО]";
+                noPhoto.BackColor = card.BackColor;
+                noPhoto.AutoSize = true;
+                noPhoto.Location = new Point(15, 40);
+
+                picture.Controls.Add(noPhoto);
             }
 
             card.Controls.Add(picture);
